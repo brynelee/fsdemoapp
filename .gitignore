@@ -43,3 +43,10 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+.gradle
+android/app/build
+.project
+
+# specific for React-Native project
+local.properties
+
