@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
 import ButtonView from "./ButtonView";
 
+
 import {
   StyleSheet,
   Text,
-    View,
-    TextInput,
-    Dimensions
+  View,
+  TextInput,
+  Dimensions,
+  Alert,
+  fetch
 } from 'react-native';
 
 const {width, height} = Dimensions.get('window');
 const SCREEN_WIDTH = width;
 
-export default class LoginView extends Component {
+const PWRightWid = 100;
 
+export default class LoginView extends Component {
 
     constructor(props) {
         super(props);
@@ -68,13 +72,100 @@ export default class LoginView extends Component {
                   ></ButtonView>
                 </View>
 
+                <View style = {[styles.lineStyle, {top: 99}]}></View>
               </View>
+              
+              <ButtonView 
+                  btnName='登录'
+                  btnStyle = {styles.loginBtnStyle}
+                  onPress = {this._onClickLogin}
+              ></ButtonView>
+
+              <ButtonView 
+                  btnName='忘记密码?'
+                  btnStyle = {styles.forgetPWStyle}
+                  onPress = {this._onClickForgetPW}
+                  textStyle = {{color:'#D6D6D6', justifyContent: 'flex-end',}}
+              ></ButtonView>
+
+              <ButtonView 
+                  btnName= {this.state.changeBtnTitle}
+                  btnStyle = {styles.SIMBtnStyle}
+                  onPress = {this._onClickSIM}
+                  textStyle = {{color:'#D6D6D6'}}
+              ></ButtonView>
+
             </View>
+
+            
         )
     }
 
+    _getUserName = () => {
+      alert('A name was submitted: ' + this.state.userName);
+    };
+
+    _getUserPW = () => {
+      alert('A pwd was submitted: ' + this.state.userPW);
+    }
+  
+    _getPhoneCode = () => {
+      alert('获取验证码')
+    }
+  
+    _onClickLogin = () => {
+      var usrInfo = "用户名：" + this.state.userName + "密码：" + this.state.userPW
+      Alert.alert(usrInfo);
+  
+    };
+
+    _onClickSIM = () =>{
+      this.setState({PWRight: this.state.PWRight == PWRightWid ? 0 : PWRightWid});
+      this._hiddenGetCodeBtn
+      this.setState({userNameTip: this.state.PWRight == PWRightWid ? "手机号" : "账户"});
+      this.setState({userPWTip: this.state.PWRight == PWRightWid ? "验证码" : "密码"});
+      this.setState({changeBtnTitle: this.state.PWRight == PWRightWid ? "使用账号密码登录" : "使用手机号验证码登录"});
+   };
+ 
+    _onClickForgetPW = () =>{
+      this.props.navigation.navigate('Details');
+    };
+
+   _hiddenGetCodeBtn = () => {
+    if (this.state.PWRight == PWRightWid){
+        reuturn (
+            <ButtonView 
+                btnName='获取验证码'
+                btnStyle = {{alignItems: 'flex-end', backgroundColor: '#D6D6D6'}}
+                onPress = {this._getPhoneCode}
+                textStyle = {{color:'gray', justifyContent: 'flex-end',}}
+            ></ButtonView>
+        );
+    }else{
+      return NULL;
+    }
+  }
+
+  getUsrInfo = () => {
+
+    fetch('http://mob.b2bex.com/mAutozi/login/login.mpi?loginName=xiaob10&pwd=123456789a')
+    .then((response) => response.json())
+    .then((responseJson) => {
+
+        this.state.userName = responseJson.status.code;
+        this.state.userPW = responseJson.status.msg;
+
+        this.setState({'userName':responseJson.status.code, 'userPW':responseJson.status.msg});
+        
+        return "responseJson.movies";
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+  }
 
 }
+
 
 const styles = StyleSheet.create({
     container: {

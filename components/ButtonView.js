@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 
-export default class ButtonView extends React.Component {
+export default class ButtonView extends Component {
 
 	static defaultProps = {
     	btnName: 'Button',
