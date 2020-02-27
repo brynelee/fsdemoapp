@@ -90,6 +90,7 @@ export default class LoginView extends Component {
           textStyle={{ color: '#D6D6D6', justifyContent: 'flex-end', }}
         ></ButtonView>
 
+        
         <ButtonView
           btnName={this.state.changeBtnTitle}
           btnStyle={styles.SIMBtnStyle}
@@ -124,6 +125,7 @@ export default class LoginView extends Component {
     //this.postTest2();
   };
 
+  //切换手机OTA认证和账号密码认证方式
   _onClickSIM = () => {
     this.setState({ PWRight: this.state.PWRight == PWRightWid ? 0 : PWRightWid });
     this._hiddenGetCodeBtn
@@ -194,20 +196,10 @@ export default class LoginView extends Component {
 
   userLogin = () => {
 
-/*     fetch('http://192.168.3.127:8081/usercenter/login', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: 'dahai',
-        password: '666666',
-      }),
-    }).then((response) => response.json()) */
-
     let urlLogin = 'http://192.168.3.127:8081/usercenter/login';
-    let params = 'username=dahai&password=666666';
+    //let params = 'username=dahai&password=666666';
+    let params = 'username=' + this.state.userName + '&password=' + this.state.userPW;
+    console.log(params);
 
     postData(urlLogin, params)
       .then((responseJson) => {
@@ -221,6 +213,8 @@ export default class LoginView extends Component {
           case 4: //token expired, proceed with token proccessing (save the new token too)
             console.log("login responded successfully.");
             alert(JSON.stringify(responseJson));
+
+            //todo: login successfully, save the user info and route to userhome page
 
       /*      this.state.userName = responseJson.username;
             this.state.userToken = responseJson.userToken;

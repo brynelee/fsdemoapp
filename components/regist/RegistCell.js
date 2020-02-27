@@ -16,7 +16,7 @@ const {width, height} = Dimensions.get('window');
 const SCREEN_WIDTH = width;
 
 
-export default class RegistCell extends React.Component {
+export default class RegistCell extends Component {
 
 	constructor(props) {
     super(props);
@@ -25,10 +25,10 @@ export default class RegistCell extends React.Component {
   render() {
 
     // const {name, full_name} = this.props.item.item || {};
-    let name = this.props.item.item.name;
-    let full_name = this.props.item.item.owner.node_id;
+    let username = this.props.item.item.username;
+    let userId = this.props.item.item.userId;
 
-    console.log(`===>message cell props, ${name}, ${full_name}`, this.props.item.item)
+    console.log(`===>message cell props, ${username}, ${userId}: `, this.props.item.item)
 
     return (
       <View style={styles.container}>
@@ -39,10 +39,10 @@ export default class RegistCell extends React.Component {
             <Image
               source={require('./img/graphql_wx.jpg')}
               style={styles.image}
-              resizeMode={Image.resizeMode.stretch} />
+              resizeMode="stretch" />
             <View style={styles.insideView}>
-              <Text style={styles.insideText}>{name}</Text>
-              <Text style={styles.insideText}>{full_name}</Text>
+              <Text style={styles.insideText}>{username}</Text>
+              <Text style={styles.insideText}>{userId}</Text>
             </View>
           </View>
         </TouchableOpacity>

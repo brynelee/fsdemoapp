@@ -11,6 +11,7 @@ import {
   TouchableHighlight,
   Dimensions,
   TouchableOpacity,
+  Fetch
 } from 'react-native';
 
 import RegistCell from './RegistCell';
@@ -18,7 +19,7 @@ import RegistCell from './RegistCell';
 const { width1, height1 } = Dimensions.get('window');
 const SCREEN_WIDTH1 = width1;
 
-export default class RegistView extends React.Component {
+export default class RegistView extends Component {
 
 	constructor(props) {
     super(props);
@@ -40,7 +41,8 @@ export default class RegistView extends React.Component {
   }
 
   requestData = () => {
-    const url = 'https://api.github.com/users/futurechallenger/repos';
+    //const url = 'https://api.github.com/users/futurechallenger/repos';
+    const url = 'http://192.168.3.127:8081/usercenter/getuserlist';
     fetch(url).then(res => {
       console.log('started fetch');
       return res.json()
@@ -85,7 +87,7 @@ export default class RegistView extends React.Component {
         <FlatList
           data={this.state.data || []}
           renderItem={this.renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.userId}
           // onRefresh={this.handleRefresh}
           onEndReachedThreshold={0} />
       </View>
