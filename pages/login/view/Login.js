@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
-import ButtonView from "./ButtonView";
-import {postData, getData} from "../utils/networkutils"
+import React, { Component} from 'react';
+import {PropTypes} from 'prop-types';
+import {connect} from 'react-redux';
+import ButtonView from "../../../components/ButtonView";
 
+import {PWRightWid} from '../../../constants';
 
 import {
   StyleSheet,
@@ -9,17 +11,16 @@ import {
   View,
   TextInput,
   Dimensions,
-  Alert,
-  Fetch
 } from 'react-native';
+
+import { loginConnect, userNameChange, passwordChange, switchAuthMethod } from '../actionCreators';
 
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width;
 
-const PWRightWid = 100;
+class LoginView extends Component {
 
-export default class LoginView extends Component {
-
+  /*
   constructor(props) {
     super(props);
 
@@ -34,6 +35,7 @@ export default class LoginView extends Component {
     };
 
   }
+  */
 
   render() {
 
@@ -43,27 +45,23 @@ export default class LoginView extends Component {
         <View style={styles.BGViewStyle}>
           <View style={[styles.inputCellStyle, { height: 49.75, top: 0, right: 0, }]}>
             <Text style={styles.welcome}>
-              {this.state.userNameTip}
+              {this.props.userNameTip}
             </Text>
             <TextInput style={styles.inputViewStyle}
-              onChangeText={(text) => {
-                this.setState({ userName: text });
-              }}
+              onChangeText={(text) => {this.props.onUserNameChange(text)}}
               placeholder="请输入手机号"
             />
           </View>
 
           <View style={[styles.lineStyle, { top: 49.75 }]}></View>
 
-          <View style={[styles.inputCellStyle, { height: 49.75, top: 50.25, right: this.state.PWRight, justifyContent: 'space-between' }]}>
+          <View style={[styles.inputCellStyle, { height: 49.75, top: 50.25, right: this.props.PWRight, justifyContent: 'space-between' }]}>
             <Text style={styles.welcome}>
-              {this.state.userPWTip}
+              {this.props.userPWTip}
             </Text>
             <TextInput style={styles.inputViewStyle}
               secureTextEntry={true}
-              onChangeText={(text) => {
-                this.setState({ userPW: text });
-              }}
+              onChangeText={(text) => {this.props.onPasswordChange(text)}}
               placeholder="请输入验证码"
             ></TextInput>
             <ButtonView
@@ -80,7 +78,7 @@ export default class LoginView extends Component {
         <ButtonView
           btnName='登录'
           btnStyle={styles.loginBtnStyle}
-          onPress={this._onClickLogin}
+          onPress={this.props.onLoginButtonClick(this.props.userName, this.props.password)}
         ></ButtonView>
 
         <ButtonView
@@ -92,7 +90,7 @@ export default class LoginView extends Component {
 
         
         <ButtonView
-          btnName={this.state.changeBtnTitle}
+          btnName={this.props.changeBtnTitle}
           btnStyle={styles.SIMBtnStyle}
           onPress={this._onClickSIM}
           textStyle={{ color: '#D6D6D6' }}
@@ -116,22 +114,10 @@ export default class LoginView extends Component {
     alert('获取验证码')
   }
 
-  _onClickLogin = () => {
-    /* var usrInfo = "用户名：" + this.state.userName + "密码：" + this.state.userPW
-    Alert.alert(usrInfo); */
-    this.userLogin();
-    //this.getUserList();
-    //this.postTest();
-    //this.postTest2();
-  };
-
   //切换手机OTA认证和账号密码认证方式
   _onClickSIM = () => {
-    this.setState({ PWRight: this.state.PWRight == PWRightWid ? 0 : PWRightWid });
-    this._hiddenGetCodeBtn
-    this.setState({ userNameTip: this.state.PWRight == PWRightWid ? "手机号" : "账户" });
-    this.setState({ userPWTip: this.state.PWRight == PWRightWid ? "验证码" : "密码" });
-    this.setState({ changeBtnTitle: this.state.PWRight == PWRightWid ? "使用账号密码登录" : "使用手机号验证码登录" });
+    this.props.onSwitchAuthMethod();
+    this._hiddenGetCodeBtn();
   };
 
   _onClickForgetPW = () => {
@@ -139,8 +125,8 @@ export default class LoginView extends Component {
   };
 
   _hiddenGetCodeBtn = () => {
-    if (this.state.PWRight == PWRightWid) {
-      reuturn(
+    if (this.props.PWRight == PWRightWid) {
+      return(
         <ButtonView
           btnName='获取验证码'
           btnStyle={{ alignItems: 'flex-end', backgroundColor: '#D6D6D6' }}
@@ -153,33 +139,44 @@ export default class LoginView extends Component {
     }
   }
 
+}
 
-  /*
-  Login Response Payload definition in usercenter
-  
-  error code definition：
-      0x1 - login success
-      0x2 - password is not correct
-      0x3 - user not exist
-      0x4 - token expired
-  
+LoginView.propTypes = {
+  onLoginButtonClick: PropTypes.func.isRequired
+};
 
-  public static final int LOGIN_SUCCESS = 0x1;
-  public static final int PASSWORD_INCORRECT = 0x2;
-  public static final int USER_NOT_EXIST = 0x3;
-  public static final int TOKEN_EXPIRED = 0x4;
+const mapStateToProps = (state) => {
+  return {
+    userName: state.userName,
+    userNameTip: state.userNameTip,
+    userPW: state.userPW,
+    userPWTip: state.userPWTip,
+    userToken: state.userToken,
+    changeBtnTitle: state.changeBtnTitle,
+    PWRight: state.PWRight,
+  };
+};
 
-  public static final String MSG_PASSWORD_INCORRECT = "Password provided is incorrect.";
-  public static final String MSG_USER_NOT_EXIST = "User not exist, please verify or register.";
-  public static final String MSG_TOKEN_EXPIRED = "Token expired.";
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onLoginButtonClick: (username, password) => {
+      dispatch(loginConnect(username, password));
+    },
+    onUserNameChange: (username) => {
+      dispatch(userNameChange(username));
+    },
+    onPasswordChange: (password) => {
+      dispatch(passwordChange(password));
+    },
+    onSwitchAuthMethod: () => {
+      dispatch(switchAuthMethod());
+    }
+  }
+};
 
-  public int errorCode;
-  public String errorMessage;
-  public String username;
-  public String userToken;
+export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
 
-  */
-
+/*
   getUserList = () => {
 
     let urlGetUserList = "http://192.168.3.127:8081/usercenter/getuserlist";
@@ -190,7 +187,6 @@ export default class LoginView extends Component {
     .catch((error) => {
       console.error('Error: ', error);
     });
-
 
   }
 
@@ -216,7 +212,7 @@ export default class LoginView extends Component {
 
             //todo: login successfully, save the user info and route to userhome page
 
-      /*      this.state.userName = responseJson.username;
+            this.state.userName = responseJson.username;
             this.state.userToken = responseJson.userToken;
 
             this.setState({ 'userName': responseJson.username, 'userToken': responseJson.userToken });
@@ -230,7 +226,7 @@ export default class LoginView extends Component {
             commit('auth_success', user);
             console.log("Store: the response username is ", user.username);
             console.log("Store: the state.user is ", this.state.user);
-            */
+
             break;
 
           case 2: //password is incorrect, need to tell the user to input again
@@ -254,6 +250,7 @@ export default class LoginView extends Component {
 
 }
 
+*/
 
 const styles = StyleSheet.create({
   container: {

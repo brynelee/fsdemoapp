@@ -1,0 +1,1 @@
+export const PWRightWid = 100;

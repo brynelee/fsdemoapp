@@ -1,10 +1,10 @@
-export default class LoginModel {
+export default class UserModel {
 
     constructor(username, password){
         this.username = username;
         this.password = password;
-        this.userId = null;
-        this.userToken = null;
+        this.userId = '';
+        this.userToken = '';
     }
 
     setFromObject(ob){
@@ -14,3 +14,7 @@ export default class LoginModel {
         this.userToken = ob.userToken;
     }
 };
+
+export const LOGIN_STATUS_LOADING = 'loading';
+export const LOGIN_STATUS_SUCCESS = 'success';
+export const LOGIN_STATUS_FAILURE = 'failure';
