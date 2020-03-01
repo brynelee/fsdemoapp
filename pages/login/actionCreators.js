@@ -11,27 +11,27 @@ import {
 import { UserModel } from "./UserModel";
 
 export const loginStart = (username, password) => {
-    console.log("loginStart action creator was called ...");
+    console.log("loginStart action creator was called with username and password as: ", username, password);
     return {type: LOGIN_START, data: {username, password}};
 }
 
 export const loginSuccess = (usermodel) => {
-    console.log("loginSuccess action creator was called ...");
+    console.log("loginSuccess action creator was called with usermodel: ", usermodel);
     return {type: LOGIN_SUCCESS, data: usermodel};
 }
 
 export const loginFailure = (error) => {
-    console.log("loginFailure action creator was called ...");
+    console.log("loginFailure action creator was called with error: ", error);
     return {type: LOGIN_FAILURE, data: error};
 }
 
 export const userNameChange = (username) => {
-    console.log("userNameChange action creator was called ...");
+    console.log("userNameChange action creator was called, with username: ", username);
     return {type: USER_NAME_CHANGE, data: username};
 }
 
 export const passwordChange = (password) => {
-    console.log("passwordChange action creator was called ...");
+    console.log("passwordChange action creator was called with password: ", password);
     return {type: PASSWORD_CHANGE, data: password};
 }
 
@@ -71,6 +71,8 @@ export const loginConnect = (username, password) => {
     return (dispatch) => {
         
         console.log("loginConnect Aync action creator called ...");
+        console.log("loginConnect - username: ", username);
+        console.log("loginConnect - password: ", password);
 
         let urlLogin = 'http://192.168.3.127:8081/usercenter/login';
         

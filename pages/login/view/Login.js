@@ -78,7 +78,7 @@ class LoginView extends Component {
         <ButtonView
           btnName='登录'
           btnStyle={styles.loginBtnStyle}
-          onPress={this.props.onLoginButtonClick(this.props.userName, this.props.password)}
+          onPress={() => {this._onLoginButtonClick(this.props.userName, this.props.userPW)}}
         ></ButtonView>
 
         <ButtonView
@@ -100,6 +100,12 @@ class LoginView extends Component {
 
 
     )
+  }
+
+  _onLoginButtonClick = (username, password) => {
+    console.log("_onLoginButtonClick this.props.userName:", username);
+    console.log("_onLoginButtonClick this.props.userPW:", password);
+    this.props.onLoginButtonClick(username, password);
   }
 
   _getUserName = () => {
@@ -139,6 +145,11 @@ class LoginView extends Component {
     }
   }
 
+  componentDidMount = () => {
+    console.log("ComponentDidMount called...");
+    console.log("this.props.userName: ", this.props.userName);
+  }
+
 }
 
 LoginView.propTypes = {
@@ -146,18 +157,24 @@ LoginView.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+  console.log("mapStateToProps called...");
+  console.log("mapStateToProps - state: ", state);
+  console.log("mapStateToProps - state.userName", state.logins.userName);
+  console.log("mapStateToProps - state.userPW: ", state.logins.userPW);
+  console.log("mapStateToProps - state.userNameTip: ", state.logins.userNameTip);
   return {
-    userName: state.userName,
-    userNameTip: state.userNameTip,
-    userPW: state.userPW,
-    userPWTip: state.userPWTip,
-    userToken: state.userToken,
-    changeBtnTitle: state.changeBtnTitle,
-    PWRight: state.PWRight,
+    userName: state.logins.userName,
+    userNameTip: state.logins.userNameTip,
+    userPW: state.logins.userPW,
+    userPWTip: state.logins.userPWTip,
+    userToken: state.logins.userToken,
+    changeBtnTitle: state.logins.changeBtnTitle,
+    PWRight: state.logins.PWRight,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
+  console.log("mapDispatchToProps called...");
   return {
     onLoginButtonClick: (username, password) => {
       dispatch(loginConnect(username, password));
@@ -177,18 +194,20 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
 
 /*
-  getUserList = () => {
 
-    let urlGetUserList = "http://192.168.3.127:8081/usercenter/getuserlist";
+getUserList = () => {
 
-    getData(urlGetUserList).then((responseJson) => {
-      console.log(responseJson);
-    })
-    .catch((error) => {
-      console.error('Error: ', error);
-    });
+  alert("getUserList() was called.");
+  let urlGetUserList = "http://192.168.3.127:8081/usercenter/getuserlist";
 
-  }
+  getData(urlGetUserList).then((responseJson) => {
+    console.log(responseJson);
+  })
+  .catch((error) => {
+    console.error('Error: ', error);
+  });
+
+}
 
   userLogin = () => {
 

@@ -20,12 +20,15 @@ export default (state = {
                 action) => {
     
     console.log("authentication reducer was called with action.type as: ", action.type);
+    console.log("authentication reducer was called with action.data: ", action.data);
+    //console.log("authentication reducer state.userName: ", state.logins.userName);
+    //console.log("authentication reducer state.userPW: ", state.logins.userPW);
 
     switch(action.type) {
         case USER_NAME_CHANGE:
-            return {...state, userName: action.username};
+            return {...state, userName: action.data};
         case PASSWORD_CHANGE:
-            return {...state, userPW: action.password};
+            return {...state, userPW: action.data};
         case SWITCH_AUTH_METHOD:
             return {...state, 
                 PWRight: PWRight == PWRightWid ? 0 : PWRightWid, 
