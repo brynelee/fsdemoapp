@@ -20,23 +20,6 @@ const SCREEN_WIDTH = width;
 
 class LoginView extends Component {
 
-  /*
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      userNameTip: "手机号",
-      userName: "",
-      userPWTip: "验证码",
-      userPW: "",
-      userToken: "",
-      changeBtnTitle: "使用账号密码登录",
-      PWRight: 0,
-    };
-
-  }
-  */
-
   render() {
 
     return (
@@ -141,7 +124,7 @@ class LoginView extends Component {
         ></ButtonView>
       );
     } else {
-      return NULL;
+      return null;
     }
   }
 
@@ -159,9 +142,9 @@ LoginView.propTypes = {
 const mapStateToProps = (state) => {
   console.log("mapStateToProps called...");
   console.log("mapStateToProps - state: ", state);
-  console.log("mapStateToProps - state.userName", state.logins.userName);
-  console.log("mapStateToProps - state.userPW: ", state.logins.userPW);
-  console.log("mapStateToProps - state.userNameTip: ", state.logins.userNameTip);
+  console.log("mapStateToProps - state.logins.userName", state.logins.userName);
+  console.log("mapStateToProps - state.logins.userPW: ", state.logins.userPW);
+  console.log("mapStateToProps - state.logins.userNameTip: ", state.logins.userNameTip);
   return {
     userName: state.logins.userName,
     userNameTip: state.logins.userNameTip,

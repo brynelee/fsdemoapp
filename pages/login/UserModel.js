@@ -15,6 +15,7 @@ export default class UserModel {
     }
 };
 
+export const LOGIN_STATUS_LOGOUT = 'logout';
 export const LOGIN_STATUS_LOADING = 'loading';
 export const LOGIN_STATUS_SUCCESS = 'success';
 export const LOGIN_STATUS_FAILURE = 'failure';
