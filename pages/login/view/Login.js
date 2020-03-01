@@ -13,6 +13,13 @@ import {
   Dimensions,
 } from 'react-native';
 
+import {
+  LOGIN_STATUS_FAILURE,
+  LOGIN_STATUS_LOADING,
+  LOGIN_STATUS_LOGOUT,
+  LOGIN_STATUS_SUCCESS
+} from '../UserModel';
+
 import { loginConnect, userNameChange, passwordChange, switchAuthMethod } from '../actionCreators';
 
 const { width, height } = Dimensions.get('window');
@@ -21,68 +28,83 @@ const SCREEN_WIDTH = width;
 class LoginView extends Component {
 
   render() {
-
-    return (
-
-      <View style={styles.container}>
-        <View style={styles.BGViewStyle}>
-          <View style={[styles.inputCellStyle, { height: 49.75, top: 0, right: 0, }]}>
-            <Text style={styles.welcome}>
-              {this.props.userNameTip}
-            </Text>
-            <TextInput style={styles.inputViewStyle}
-              onChangeText={(text) => {this.props.onUserNameChange(text)}}
-              placeholder="请输入手机号"
-            />
-          </View>
-
-          <View style={[styles.lineStyle, { top: 49.75 }]}></View>
-
-          <View style={[styles.inputCellStyle, { height: 49.75, top: 50.25, right: this.props.PWRight, justifyContent: 'space-between' }]}>
-            <Text style={styles.welcome}>
-              {this.props.userPWTip}
-            </Text>
-            <TextInput style={styles.inputViewStyle}
-              secureTextEntry={true}
-              onChangeText={(text) => {this.props.onPasswordChange(text)}}
-              placeholder="请输入验证码"
-            ></TextInput>
-            <ButtonView
-              btnName='获取验证码'
-              btnStyle={{ width: 90, marginRight: 10, backgroundColor: '#D6D6D6' }}
-              onPress={this._getPhoneCode}
-              textStyle={{ color: 'gray', justifyContent: 'flex-end', }}
-            ></ButtonView>
-          </View>
-
-          <View style={[styles.lineStyle, { top: 99 }]}></View>
+    console.log("LoginView - render() - loginStatus: ", this.props.loginStatus);
+    switch(this.props.loginStatus){
+      case LOGIN_STATUS_LOADING:
+        return (
+        <View>
+          <Text>Login in progress...</Text>
         </View>
+        );
+      case LOGIN_STATUS_SUCCESS:
+        this.props.navigation.navigate("UserHome");
+        return (
+          <View>
+            <Text>Login successfully!</Text>
+          </View>
+        );
+      case LOGIN_STATUS_LOGOUT:
+      case LOGIN_STATUS_FAILURE:
+        return (
 
-        <ButtonView
-          btnName='登录'
-          btnStyle={styles.loginBtnStyle}
-          onPress={() => {this._onLoginButtonClick(this.props.userName, this.props.userPW)}}
-        ></ButtonView>
-
-        <ButtonView
-          btnName='忘记密码?'
-          btnStyle={styles.forgetPWStyle}
-          onPress={this._onClickForgetPW}
-          textStyle={{ color: '#D6D6D6', justifyContent: 'flex-end', }}
-        ></ButtonView>
-
-        
-        <ButtonView
-          btnName={this.props.changeBtnTitle}
-          btnStyle={styles.SIMBtnStyle}
-          onPress={this._onClickSIM}
-          textStyle={{ color: '#D6D6D6' }}
-        ></ButtonView>
-
-      </View>
-
-
-    )
+          <View style={styles.container}>
+            <View style={styles.BGViewStyle}>
+              <View style={[styles.inputCellStyle, { height: 49.75, top: 0, right: 0, }]}>
+                <Text style={styles.welcome}>
+                  {this.props.userNameTip}
+                </Text>
+                <TextInput style={styles.inputViewStyle}
+                  onChangeText={(text) => {this.props.onUserNameChange(text)}}
+                  placeholder="请输入手机号"
+                />
+              </View>
+    
+              <View style={[styles.lineStyle, { top: 49.75 }]}></View>
+    
+              <View style={[styles.inputCellStyle, { height: 49.75, top: 50.25, right: this.props.PWRight, justifyContent: 'space-between' }]}>
+                <Text style={styles.welcome}>
+                  {this.props.userPWTip}
+                </Text>
+                <TextInput style={styles.inputViewStyle}
+                  secureTextEntry={true}
+                  onChangeText={(text) => {this.props.onPasswordChange(text)}}
+                  placeholder="请输入验证码"
+                ></TextInput>
+                <ButtonView
+                  btnName='获取验证码'
+                  btnStyle={{ width: 90, marginRight: 10, backgroundColor: '#D6D6D6' }}
+                  onPress={this._getPhoneCode}
+                  textStyle={{ color: 'gray', justifyContent: 'flex-end', }}
+                ></ButtonView>
+              </View>
+    
+              <View style={[styles.lineStyle, { top: 99 }]}></View>
+            </View>
+    
+            <ButtonView
+              btnName='登录'
+              btnStyle={styles.loginBtnStyle}
+              onPress={() => {this._onLoginButtonClick(this.props.userName, this.props.userPW)}}
+            ></ButtonView>
+    
+            <ButtonView
+              btnName='忘记密码?'
+              btnStyle={styles.forgetPWStyle}
+              onPress={this._onClickForgetPW}
+              textStyle={{ color: '#D6D6D6', justifyContent: 'flex-end', }}
+            ></ButtonView>
+    
+            
+            <ButtonView
+              btnName={this.props.changeBtnTitle}
+              btnStyle={styles.SIMBtnStyle}
+              onPress={this._onClickSIM}
+              textStyle={{ color: '#D6D6D6' }}
+            ></ButtonView>
+    
+          </View>
+        );
+    }
   }
 
   _onLoginButtonClick = (username, password) => {
@@ -153,6 +175,7 @@ const mapStateToProps = (state) => {
     userToken: state.logins.userToken,
     changeBtnTitle: state.logins.changeBtnTitle,
     PWRight: state.logins.PWRight,
+    loginStatus: state.logins.loginStatus
   };
 };
 
