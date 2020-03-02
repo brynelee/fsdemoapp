@@ -37,6 +37,8 @@ class LoginView extends Component {
         </View>
         );
       case LOGIN_STATUS_SUCCESS:
+        this.props.navigation.navigate("UserHome");
+        //this.props.history.push('UserHome');
         return (
           <View>
             <Text>Login successfully!</Text>
@@ -109,7 +111,7 @@ class LoginView extends Component {
   _onLoginButtonClick = (username, password) => {
     console.log("_onLoginButtonClick this.props.userName:", username);
     console.log("_onLoginButtonClick this.props.userPW:", password);
-    this.props.onLoginButtonClick(username, password, this.props.navigation);
+    this.props.onLoginButtonClick(username, password);
   }
 
   _getUserName = () => {
@@ -182,8 +184,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   console.log("mapDispatchToProps called...");
   return {
-    onLoginButtonClick: (username, password, nav) => {
-      dispatch(loginConnect(username, password, nav));
+    onLoginButtonClick: (username, password) => {
+      dispatch(loginConnect(username, password));
     },
     onUserNameChange: (username) => {
       dispatch(userNameChange(username));

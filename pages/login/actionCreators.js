@@ -66,7 +66,7 @@ export const switchAuthMethod = () => {
 
   */
 
-export const loginConnect = (username, password) => {
+export const loginConnect = (username, password, nav) => {
 
     return (dispatch) => {
         
@@ -139,22 +139,28 @@ export const loginConnect = (username, password) => {
                     console.log("Store: the response username is ", user.username);
                     console.log("Store: the state.user is ", this.state.user);
                     */
+
+                    dispatch(loginSuccess(userToken));
+                    nav.navigate("UserHome");
+
                     break;
         
                   case 2: //password is incorrect, need to tell the user to input again
                     //errorMessage = resp.data.errorMessage;
                     console.log(errorMessage);
+                    dispatch(loginFailure(new Error("password is incorrect")));
                     //commit('auth_passwordincorrect');
                     break;
         
                   case 3: //user does not exist, need to tell the user to input again or register
                     //errorMessage = resp.data.errorMessage;
                     console.log(errorMessage);
+                    dispatch(loginFailure(new Error("User does not exist.")));
                     //commit('auth_usernotexist');
         
                 }
                 
-                dispatch(loginSuccess(userToken));
+                
 
             }).catch((error) => {
                 console.error('Invalid json response: ' + error);

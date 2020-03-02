@@ -1,37 +1,34 @@
-import React, { Component } from "react";
-import { NavigationContainer } from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';  //refer to https://reactnavigation.org/docs/en/stack-navigator.html
-import {LoginViewConnected} from "./pages/login";
-import {RegistView} from "./pages/registration";
-import {UserHome} from "./pages/userhome";
-import {LocalTest} from "./pages/localtest";
+import React, {Component} from 'react';
+import {Router, Route, IndexRoute, browserHistory} from 'react-router';
+import {syncHistoryWithStore} from 'react-router-redux';
+import {Provider} from 'react-redux';
+import {store} from './Store';
 
-const Stack = createStackNavigator();
+import LoginViewConnected from './pages/login';
+import RegistView from './pages/registration';
+import UserHome from './pages/userhome';
+import NotFound from './components/NotFound';
 
-export default class FSDemoApp extends Component {
+//const history = syncHistoryWithStore(browserHistory, store);
+const history = browserHistory;
+
+const Routes = () => (
+  <Router history={history} IndexRoute="Home">
+    <Route path="Home" component={LoginViewConnected} />
+    <Route path="Details" component={RegistView} />
+    <Route path="UserHome" component={UserHome} />
+    <Route path="*" component={NotFound} />
+  </Router>
+);
+
+class FSDemoApp extends Component {
     render() {
         return (
-            <NavigationContainer>
-                <Stack.Navigator initialRouteName="Home"
-                screenOptions={{
-                    headerStyle: {
-                      backgroundColor: '#f4511e',
-                    },
-                    headerTintColor: '#fff',
-                    headerTitleStyle: {
-                      fontWeight: 'bold',
-                    },
-                  }}>
-                    <Stack.Screen name="Home" component={LoginViewConnected} />
-                    <Stack.Screen name="Details" component={RegistView} /> 
-                    <Stack.Screen name="UserHome" component={UserHome} />
-                </Stack.Navigator>
-            </NavigationContainer>
+            <Provider store = {store}>
+                <Routes/>
+            </Provider>
         );
     }
 }
 
-
-
-
-
+export default FSDemoApp;
