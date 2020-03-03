@@ -3,7 +3,7 @@ import {PropTypes} from 'prop-types';
 import {connect} from 'react-redux';
 import ButtonView from "../../../components/ButtonView";
 
-import {PWRightWid} from '../../../constants';
+import {PWRightWid, SCREEN_WIDTH} from '../../../constants';
 
 import {
   StyleSheet,
@@ -21,9 +21,6 @@ import {
 } from '../UserModel';
 
 import { loginConnect, userNameChange, passwordChange, switchAuthMethod } from '../actionCreators';
-
-const { width, height } = Dimensions.get('window');
-const SCREEN_WIDTH = width;
 
 class LoginView extends Component {
 
