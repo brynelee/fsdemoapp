@@ -9,8 +9,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
-  Dimensions,
+  TextInput
 } from 'react-native';
 
 import {
@@ -29,8 +28,8 @@ class LoginView extends Component {
     switch(this.props.loginStatus){
       case LOGIN_STATUS_LOADING:
         return (
-        <View>
-          <Text>Login in progress...</Text>
+        <View style={styles.inputViewStyle, {fontSize: 25}}>
+          <Text style={{fontSize: 30, textAlign: 'center'}}>Login in progress...</Text>
         </View>
         );
       case LOGIN_STATUS_SUCCESS:
