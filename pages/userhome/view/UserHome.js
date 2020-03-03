@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import {View, Text} from 'react-native';
 import ButtonView from '../../../components/ButtonView';
 
+import { logout } from '../../login/actionCreators';
+
 class UserHome extends Component {
 
     render(){
@@ -12,7 +14,7 @@ class UserHome extends Component {
             <View>
                 <Text>{this.props.userName}</Text>
                 <Text>{this.props.userToken}</Text>
-                <ButtonView btnName="Back to Home" onPress={() => this.props.navigation.navigate("Home")}></ButtonView>
+                <ButtonView btnName="Logout" onPress={() => this.props.onLogout(this.props.userName, this.props.userToken, this.props.navigation)}></ButtonView>
             </View>
         );
     }
@@ -26,4 +28,13 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect (mapStateToProps, null)(UserHome);
+const mapDispatchToProps = (dispatch) => {
+    console.log("UserHome - mapDispatchToProps called ...");
+    return {
+        onLogout: (userName, userToken, nav) => {
+            dispatch(logout(userName, userToken, nav));
+        }
+    }
+}
+
+export default connect (mapStateToProps, mapDispatchToProps)(UserHome);

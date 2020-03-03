@@ -56,6 +56,11 @@ export const switchAuthMethod = () => {
     return {type: SWITCH_AUTH_METHOD};
 }
 
+export const logoutAction = () => {
+    console.log("logoutAction creator was called ...");
+    return {type: LOGOUT};
+}
+
  /*
   Login Response Payload definition in usercenter
   
@@ -137,8 +142,7 @@ export const loginConnect = (username, password, nav) => {
                   case 1: //login success, proceed with token proccesing
                   case 4: //token expired, proceed with token proccessing (save the new token too)
                     console.log("login responded successfully with usermodel: ", usermodel);
-                    //alert(JSON.stringify(responseJson));
-
+                    
                     //login successfully, save the user info and route to userhome page
 
               /*      this.state.userName = responseJson.username;
@@ -189,4 +193,72 @@ export const loginConnect = (username, password, nav) => {
         })
 
     };
+}
+
+
+export const logout = (userName, userToken, nav) => {
+
+    return (dispatch) => {
+        
+        console.log("logout Aync action creator called ...");
+        console.log("logout action creator was called with username:", userName, " and userToken: ", userToken);
+        //console.log("loginConnect - username: ", username);
+        //console.log("loginConnect - password: ", password);
+
+        let urlLogout = 'http://192.168.3.127:8081/usercenter/logout';
+                
+        let params = 'username=' + userName + '&token=' + userToken;
+        console.log("logout fetch parameters are: ", params);
+
+        fetch(urlLogout, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            //credentials: 'same-origin', // include, *same-origin, omit
+            credentials: 'include', // for cross origin setup
+            headers: {
+              //'Content-Type': 'application/json; charset=UTF-8'
+              'Content-Type': 'application/x-www-form-urlencoded' // Java server 不能识别Fetch API 中发出json的方式
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *client
+            body: params // body data type must match "Content-Type" header
+        }).then((response) => {
+
+            if(response.status !== 200){
+                console.error('Fail to get response with status ' + response.status);
+                throw new Error('Fail to get response with status ' + response.status);
+            }
+
+            response.json().then((responseJson) => {
+
+                console.log("logout - responseJson: ", responseJson);
+                
+                let errorcode = parseInt(responseJson.errorCode);
+        
+                switch (errorcode) {
+        
+                  case 1: //logout success, proceed with token proccesing
+                    console.log("logout successfully.");
+                    dispatch(logoutAction());
+                    nav.navigate("Home");
+                    break;
+                  case 2: //token expired, proceed with token proccessing (save the new token too)
+                    console.log("logout with token error");
+                    dispatch(logoutAction());
+                    break;
+        
+                }
+                
+            }).catch((error) => {
+                console.error('Invalid json response: ' + error);
+                throw new Error('Invalid json response: ' + error);
+            });
+        }).catch((error) => {
+            console.log("logout fetch catched error: ", error);
+            throw new Error('logout error: ' + error);
+        })
+
+    };
+
 }
