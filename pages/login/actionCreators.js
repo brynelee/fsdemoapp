@@ -163,7 +163,7 @@ export const loginConnect = (username, password, nav) => {
 
                     //dispatch(loginSuccess({username, password, userToken}));
                     dispatch(loginSuccess(usermodel));
-                    nav.navigate("UserHome");
+                    nav.navigate("UserArea", {screen: "UserHome"});
 
                     break;
         
@@ -180,8 +180,6 @@ export const loginConnect = (username, password, nav) => {
                     dispatch(loginFailure(new Error("User does not exist.")));
         
                 }
-                
-                
 
             }).catch((error) => {
                 console.error('Invalid json response: ' + error);
