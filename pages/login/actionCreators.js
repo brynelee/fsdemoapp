@@ -10,6 +10,22 @@ import {
 
 import { UserModel } from "./UserModel";
 
+/* class UserModel {
+
+    constructor(username, password, userToken){
+        console.log("constructor UserModel, userToken: ", userToken);
+        this.username = username;
+        this.password = password;
+        this.userToken = userToken;
+    }
+
+    setFromObject(ob){
+        this.username = ob.username;
+        this.password = ob.password;
+        this.userToken = ob.userToken;
+    }
+} */
+
 export const loginStart = (username, password) => {
     console.log("loginStart action creator was called with username and password as: ", username, password);
     return {type: LOGIN_START, data: {username, password}};
@@ -107,23 +123,24 @@ export const loginConnect = (username, password, nav) => {
             }
 
             response.json().then((responseJson) => {
+
+                console.log("loginConnect - responseJson: ", responseJson);
                 
+                let userToken = responseJson.userToken;
+                let usermodel = new UserModel(username, password, userToken);
                 let errorcode = parseInt(responseJson.errorCode);
                 let errorMessage = responseJson.errorMessage;
-                let userId = responseJson.userId;
-                let userToken = responseJson.userToken;
+                //let userToken = responseJson.userToken;
         
                 switch (errorcode) {
         
                   case 1: //login success, proceed with token proccesing
                   case 4: //token expired, proceed with token proccessing (save the new token too)
-                    console.log("login responded successfully.");
+                    console.log("login responded successfully with usermodel: ", usermodel);
                     //alert(JSON.stringify(responseJson));
 
                     //login successfully, save the user info and route to userhome page
-                    let usermodel = userToken;
-                
-                    console.log("UserModel now is: ", usermodel);
+
               /*      this.state.userName = responseJson.username;
                     this.state.userToken = responseJson.userToken;
         
@@ -140,7 +157,8 @@ export const loginConnect = (username, password, nav) => {
                     console.log("Store: the state.user is ", this.state.user);
                     */
 
-                    dispatch(loginSuccess(userToken));
+                    //dispatch(loginSuccess({username, password, userToken}));
+                    dispatch(loginSuccess(usermodel));
                     nav.navigate("UserHome");
 
                     break;
@@ -156,7 +174,6 @@ export const loginConnect = (username, password, nav) => {
                     //errorMessage = resp.data.errorMessage;
                     console.log(errorMessage);
                     dispatch(loginFailure(new Error("User does not exist.")));
-                    //commit('auth_usernotexist');
         
                 }
                 

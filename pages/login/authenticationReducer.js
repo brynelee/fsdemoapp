@@ -46,7 +46,7 @@ export default (state = {
         case LOGIN_START:
             return {...state, loginStatus: LOGIN_STATUS_LOADING};
         case LOGIN_SUCCESS:
-            return {...state, loginStatus: LOGIN_STATUS_SUCCESS};
+            return {...state, userToken: action.data.userToken, loginStatus: LOGIN_STATUS_SUCCESS};
         case LOGIN_FAILURE:
             return {...state, loginStatus: LOGIN_STATUS_FAILURE};
         case LOGOUT:

@@ -1,16 +1,15 @@
-export default class UserModel {
+export class UserModel {
 
-    constructor(username, password){
+    constructor(username, password, userToken){
+        console.log("constructor UserModel, userToken: ", userToken);
         this.username = username;
         this.password = password;
-        this.userId = '';
-        this.userToken = '';
+        this.userToken = userToken;
     }
 
     setFromObject(ob){
         this.username = ob.username;
         this.password = ob.password;
-        this.userId = ob.userId;
         this.userToken = ob.userToken;
     }
 };

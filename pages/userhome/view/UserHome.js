@@ -19,6 +19,7 @@ class UserHome extends Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log("UserHome - userToken: ", state.logins.userToken);
     return {
         userName: state.logins.userName,
         userToken: state.logins.userToken
