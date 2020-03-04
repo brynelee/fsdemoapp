@@ -3,7 +3,6 @@ import {Image} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';  //refer to https://reactnavigation.org/docs/en/stack-navigator.html
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {MaterialCommunityIcons} from 'react-native-vector-icons';
 import {LoginViewConnected} from "./pages/login";
 import {RegistView} from "./pages/registration";
 import {UserHome} from "./pages/userhome";
