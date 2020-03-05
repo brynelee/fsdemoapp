@@ -1,10 +1,12 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 
-import loginReducer from './pages/login/authenticationReducer';
+import {reducer as loginReducer} from './pages/login';
+import {reducer as productReducer} from './pages/productlist';
 
 const reducer = combineReducers({
-	logins: loginReducer
+	logins: loginReducer,
+	product: productReducer
 });
 
 const middlewares = [thunkMiddleware];

@@ -7,7 +7,7 @@ import {LoginViewConnected} from "./pages/login";
 import {RegistView} from "./pages/registration";
 import {UserHome} from "./pages/userhome";
 import {LocalTest} from "./pages/localtest";
-import ProductList from "./pages/productlist/view/ProductList";
+import {ProductList} from "./pages/productlist";
 
 import {HomeIcon, ProductIcon, ProfileIcon} from './resources';
 

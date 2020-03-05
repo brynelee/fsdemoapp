@@ -1,29 +1,64 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
-import {View, Text, StyleSheet} from 'react-native';
-import ButtonView from '../../../components/ButtonView';
+import {StyleSheet, View, Text, FlatList} from 'react-native';
+import {ButtonView, InProgressView, NotFound} from '../../../components';
+import ProductInfo from './ProductInfo';
 
 import { logout } from '../../login/actionCreators';
 
 import {SCREEN_WIDTH} from '../../../constants';
 
+import {getProductList} from '../ProductActionCreators';
+
+import {
+    QUERY_PRODUCT_FAILURE, 
+    QUERY_PRODUCT_IDLE,
+    QUERY_PRODUCT_IN_PROGRESS,
+    QUERY_RPODUCT_SUCCESS
+} from '../ProductActionTypes';
+
+
 class ProductList extends Component {
 
-    render(){
+    constructor(props){
+        super(props);
+        this._getProductList();
+    }
 
-        return(
-            <View style={styles.container}>
-                <View style={styles.BGViewStyle}>
-                    <View style={styles.inputCellStyle, { height: 49.75, top: 0, right: 0}}>
-                        <Text style={styles.welcome}>用户名</Text>
-                        <Text style={styles.inputViewStyle1}>{this.props.userName}</Text>
+    render(){
+        switch (this.props.queryStatus){
+
+            case QUERY_PRODUCT_IDLE:
+            case QUERY_PRODUCT_IN_PROGRESS:
+                return (
+                    <InProgressView textToShow="正在加载产品目录……" />
+                );
+            case QUERY_RPODUCT_SUCCESS:
+                return(
+                    <View style={styles.container}>
+                        <FlatList
+                            data={this.props.productList}
+                            renderItem={this._renderItem}
+                        />
                     </View>
-                    <View style={[styles.lineStyle, { top: 100 }]}></View>
-                </View>
-                <ButtonView btnStyle={styles.logoutBtnStyle} btnName="退出" underlayColor="red" onPress={() => this.props.onLogout(this.props.userName, this.props.userToken, this.props.navigation)}></ButtonView>
-            </View>
-        );
+                );
+            case QUERY_PRODUCT_FAILURE:
+            default:
+                return (
+                    <NotFound/>
+                );
+        }
+    }
+
+    _getProductList(){
+        this.props.onLoadingProductList();
+    }
+
+    _renderItem({item}){
+        return (
+            <ProductInfo product={item}/>
+        )
     }
 }
 
@@ -31,13 +66,18 @@ const mapStateToProps = (state) => {
     console.log("ProductList mapStateToProps was called. ");
     return {
         userName: state.logins.userName,
-        userToken: state.logins.userToken
+        userToken: state.logins.userToken,
+        queryStatus: state.product.queryProductStatus,
+        productList: state.product.productList
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     console.log("ProductList - mapDispatchToProps called ...");
     return {
+        onLoadingProductList: () => {
+            dispatch(getProductList());
+        },
         onLogout: (userName, userToken, nav) => {
             dispatch(logout(userName, userToken, nav));
         }
