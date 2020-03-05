@@ -27,7 +27,9 @@ export default (state = {
             return {...state, queryProductStatus: QUERY_PRODUCT_FAILURE};
         case QUERY_PRODUCT_LIST_SUCCESS_ACTION:
             let dataWithKey = action.data.map((item) => {
-                return {...item, key: item.product_name};
+                item.dynamicPrice = item.dynamicPrice ? '是':'否';
+                item = {...item, key: item.product_name};
+                return item;
             })
             return {...state, productList: dataWithKey, queryProductStatus: QUERY_RPODUCT_SUCCESS};
         default:
