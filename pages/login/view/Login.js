@@ -19,7 +19,7 @@ import {
   LOGIN_STATUS_SUCCESS
 } from '../UserModel';
 
-import { loginConnect, userNameChange, passwordChange, switchAuthMethod } from '../actionCreators';
+import { loginConnect, serverAddrChange, userNameChange, passwordChange, switchAuthMethod } from '../actionCreators';
 
 class LoginView extends Component {
 
@@ -46,6 +46,15 @@ class LoginView extends Component {
             <View style={styles.BGViewStyle}>
               <View style={[styles.inputCellStyle, { height: 49.75, top: 0, right: 0, }]}>
                 <Text style={styles.welcome}>
+                  {this.props.serverAddrTip}
+                </Text>
+                <TextInput style={styles.inputViewStyle}
+                  onChangeText={(text) => {this.props.onServerAddrChange(text)}}
+                  placeholder="请输入服务器地址"
+                />
+              </View>
+              <View style={[styles.inputCellStyle, { height: 49.75, top: 50.25, right: 0, }]}>
+                <Text style={styles.welcome}>
                   {this.props.userNameTip}
                 </Text>
                 <TextInput style={styles.inputViewStyle}
@@ -54,9 +63,9 @@ class LoginView extends Component {
                 />
               </View>
     
-              <View style={[styles.lineStyle, { top: 49.75 }]}></View>
+              <View style={[styles.lineStyle, { top: 100.5 }]}></View>
     
-              <View style={[styles.inputCellStyle, { height: 49.75, top: 50.25, right: this.props.PWRight, justifyContent: 'space-between' }]}>
+              <View style={[styles.inputCellStyle, { height: 49.75, top: 100.5, right: this.props.PWRight, justifyContent: 'space-between' }]}>
                 <Text style={styles.welcome}>
                   {this.props.userPWTip}
                 </Text>
@@ -73,7 +82,7 @@ class LoginView extends Component {
                 ></ButtonView>
               </View>
     
-              <View style={[styles.lineStyle, { top: 99 }]}></View>
+              <View style={[styles.lineStyle, { top: 150.25 }]}></View>
             </View>
     
             <ButtonView
@@ -160,10 +169,13 @@ LoginView.propTypes = {
 const mapStateToProps = (state) => {
   console.log("mapStateToProps called...");
   console.log("mapStateToProps - state: ", state);
+  console.log("mapStateToProps - state.logins.serverAddr ", state.logins.serverAddr);
   console.log("mapStateToProps - state.logins.userName", state.logins.userName);
   console.log("mapStateToProps - state.logins.userPW: ", state.logins.userPW);
   console.log("mapStateToProps - state.logins.userNameTip: ", state.logins.userNameTip);
   return {
+    serverAddrTip: state.logins.serverAddrTip,
+    serverAddr: state.logins.serverAddr,
     userName: state.logins.userName,
     userNameTip: state.logins.userNameTip,
     userPW: state.logins.userPW,
@@ -180,6 +192,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onLoginButtonClick: (username, password, nav) => {
       dispatch(loginConnect(username, password, nav));
+    },
+    onServerAddrChange: (address) => {
+      dispatch(serverAddrChange(address));
     },
     onUserNameChange: (username) => {
       dispatch(userNameChange(username));
@@ -220,13 +235,13 @@ const styles = StyleSheet.create({
     height: 49.5, right: 0, left: 80, top: 0, borderColor: 'white', borderWidth: 1, position: 'absolute'
   },
   loginBtnStyle: {
-    backgroundColor: '#D6D6D6', height: 45, width: SCREEN_WIDTH - 32, top: 150, position: 'absolute', margin: 16,
+    backgroundColor: '#D6D6D6', height: 45, width: SCREEN_WIDTH - 32, top: 200, position: 'absolute', margin: 16,
   },
   forgetPWStyle: {
     margin: 16,
     position: 'absolute',
     right: 0,
-    top: 210,
+    top: 270,
     width: 150,
     height: 30,
     alignItems: 'flex-end',
@@ -234,7 +249,7 @@ const styles = StyleSheet.create({
   },
   SIMBtnStyle: {
     position: 'absolute',
-    top: 260,
+    top: 320,
     height: 30,
     width: SCREEN_WIDTH - 32,
     alignItems: 'center',

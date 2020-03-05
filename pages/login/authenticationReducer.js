@@ -5,7 +5,8 @@ import {
     PASSWORD_CHANGE,
     SWITCH_AUTH_METHOD,
     LOGIN_SUCCESS,
-    LOGIN_FAILURE
+    LOGIN_FAILURE,
+    SERVER_ADDRESS_CHANGE
 } from "./actiontypes";
 
 import {LOGIN_STATUS_LOGOUT, 
@@ -17,6 +18,8 @@ import {LOGIN_STATUS_LOGOUT,
 import {PWRightWid} from '../../constants';
 
 export default (state = {
+                        serverAddrTip: "服务器地址",
+                        serverAddr: '192.168.3.127:8081',
                         userNameTip: "手机号",
                         userName: "dahai",
                         userPWTip: "验证码",
@@ -33,6 +36,8 @@ export default (state = {
     console.log("authenticationReducer - PWRightWid: ", PWRightWid);
 
     switch(action.type) {
+        case SERVER_ADDRESS_CHANGE:
+            return {...state, serverAddr: action.data};
         case USER_NAME_CHANGE:
             return {...state, userName: action.data};
         case PASSWORD_CHANGE:

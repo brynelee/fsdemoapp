@@ -5,7 +5,8 @@ import {
     LOGIN_START,
     USER_NAME_CHANGE,
     PASSWORD_CHANGE,
-    SWITCH_AUTH_METHOD
+    SWITCH_AUTH_METHOD,
+    SERVER_ADDRESS_CHANGE
 } from "./actiontypes";
 
 import { UserModel } from "./UserModel";
@@ -39,6 +40,11 @@ export const loginSuccess = (usermodel) => {
 export const loginFailure = (error) => {
     console.log("loginFailure action creator was called with error: ", error);
     return {type: LOGIN_FAILURE, data: error};
+}
+
+export const serverAddrChange = (address) => {
+    console.log("serverAddrChange action creator was called with address: ", address);
+    return {type: SERVER_ADDRESS_CHANGE, data: address};
 }
 
 export const userNameChange = (username) => {
@@ -89,13 +95,16 @@ export const logoutAction = () => {
 
 export const loginConnect = (username, password, nav) => {
 
-    return (dispatch) => {
+    return (dispatch, getState) => {
         
         console.log("loginConnect Aync action creator called ...");
         console.log("loginConnect - username: ", username);
         console.log("loginConnect - password: ", password);
 
-        let urlLogin = 'http://192.168.3.127:8081/usercenter/login';
+        
+        //let urlLogin = 'http://192.168.3.127:8081/usercenter/login';
+        let serverAddr = getState().logins.serverAddr;
+        let urlLogin = `http://${serverAddr}/usercenter/login`;
         
         //let params = 'username=dahai&password=666666';
         let params = 'username=' + username + '&password=' + password;
@@ -123,8 +132,8 @@ export const loginConnect = (username, password, nav) => {
         }).then((response) => {
 
             if(response.status !== 200){
-                console.error('Fail to get response with status ' + response.status);
-                throw new Error('Fail to get response with status ' + response.status);
+                console.error('Failed and got response with status ' + response.status);
+                throw new Error('Failed and got response with status ' + response.status);
             }
 
             response.json().then((responseJson) => {
