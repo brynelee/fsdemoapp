@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons } from 'react-native-vector-icons';
+
 
 import HomeIcon from './resources'; 
 import ProductIcon from './resources';
@@ -12,6 +12,8 @@ function Feed() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Feed!</Text>
+      <Image source={{uri: "https://p4.lefile.cn/product/adminweb/2019/04/02/6179788b-d0cc-4a1f-9fda-37674bcd78ce.jpg"}}
+    style={{width: 40, height: 40}}></Image>
     </View>
   );
 }
@@ -20,6 +22,9 @@ function Profile() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Profile!</Text>
+      <Image source={{uri: "https://p2.lefile.cn/product/adminweb/2018/11/07/357aac65-7c0e-45d8-a10d-c317da3abbde.png"}}
+      style={{width:40, height: 40}}></Image>
+      <Text>问号</Text>
     </View>
   );
 }
