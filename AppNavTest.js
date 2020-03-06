@@ -3,10 +3,10 @@ import { Text, View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-
 import HomeIcon from './resources'; 
 import ProductIcon from './resources';
 import ProfileIcon from './resources';
+import {TestCustomAlert, Dropdown} from './experiments';
 
 function Feed() {
   return (
@@ -71,6 +71,24 @@ function MyTabs() {
         options={{
             tabBarIcon: () => (
                 <Image source={ProfileIcon} style={{ height: 20, width: 20 }} />
+            ),
+          }}
+      />
+      <Tab.Screen
+        name="TestTab"
+        component={TestCustomAlert}
+        options={{
+            tabBarIcon: () => (
+                <Image source={ProductIcon} style={{ height: 20, width: 20 }} />
+            ),
+          }}
+      />
+      <Tab.Screen
+        name="Dropdown"
+        component={Dropdown}
+        options={{
+            tabBarIcon: () => (
+                <Image source={ProductIcon} style={{ height: 20, width: 20 }} />
             ),
           }}
       />
