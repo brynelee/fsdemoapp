@@ -104,6 +104,7 @@ export const loginConnect = (username, password, nav) => {
         
         //let urlLogin = 'http://192.168.3.127:8081/usercenter/login';
         let serverAddr = getState().logins.serverAddr;
+        //let urlLogin = `https://${serverAddr}/usercenter/login`;
         let urlLogin = `http://${serverAddr}/usercenter/login`;
         
         //let params = 'username=dahai&password=666666';
@@ -205,14 +206,17 @@ export const loginConnect = (username, password, nav) => {
 
 export const logout = (userName, userToken, nav) => {
 
-    return (dispatch) => {
+    return (dispatch, getState) => {
         
         console.log("logout Aync action creator called ...");
         console.log("logout action creator was called with username:", userName, " and userToken: ", userToken);
         //console.log("loginConnect - username: ", username);
         //console.log("loginConnect - password: ", password);
 
-        let urlLogout = 'http://192.168.3.127:8081/usercenter/logout';
+        let serverAddr = getState().logins.serverAddr;
+        //let urlLogout = `https://${serverAddr}/usercenter/logout`;
+        let urlLogout = `http://${serverAddr}/usercenter/logout`;
+        //let urlLogout = 'https://192.168.3.127:8081/usercenter/logout';
                 
         let params = 'username=' + userName + '&token=' + userToken;
         console.log("logout fetch parameters are: ", params);

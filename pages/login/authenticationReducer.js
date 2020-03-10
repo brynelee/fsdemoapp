@@ -19,7 +19,7 @@ import {PWRightWid} from '../../constants';
 
 export default (state = {
                         serverAddrTip: "服务器地址",
-                        serverAddr: '192.168.3.127:8081',
+                        serverAddr: '192.168.3.127:80',
                         userNameTip: "手机号",
                         userName: "dahai",
                         userPWTip: "验证码",
